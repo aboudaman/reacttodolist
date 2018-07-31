@@ -15,6 +15,15 @@ class App extends Component {
     checkBox: false
   }
 
+  handleTaskCompletion(task, i) {
+             //get copy of task object 
+    const { completed } = task
+    const [...taskCopy] = this.state.tasks //Get copy of task array
+    taskCopy[i] = {...task, completed: !completed}
+
+    //Update the array
+    this.setState({tasks: taskCopy})
+  }
   render() {
 
     let num = 0;
@@ -23,15 +32,7 @@ class App extends Component {
       <tr key={task.title.toString()}>
         <td> {num++}</td>
         <td style={{color: task.completed? "green":""}}>  {task.title} </td>
-        <td><input type="checkbox" className="form-check-input" onChange={ () => {
-             //get copy of task object 
-              const { completed } = task
-              const [...taskCopy] = this.state.tasks //Get copy of task array
-              taskCopy[i] = {...task, completed: !completed}
-
-              //Update the array
-              this.setState({tasks: taskCopy})
-            }}/> 
+        <td><input type="checkbox" className="form-check-input" onChange={() => this.handleTaskCompletion(task, i)}/> 
         </td>
         <td> pending </td>
         <td> edit | delete </td>
