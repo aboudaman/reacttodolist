@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 // import logo from './logo.svg';
 import './App.css';
+import Name from './Name';
 
 class App extends Component {
 
@@ -12,7 +13,8 @@ class App extends Component {
       {title: 'Create a web application', completed: false}
     ],
     color: "",
-    newItem: ''
+    newItem: '',
+    status: 'pending'
   }
 
   handleTaskCompletion(task, i) {
@@ -103,6 +105,15 @@ class App extends Component {
       tasks: allDeletedTasks
     })
   }
+
+
+  sayHello(name) {
+    alert('Hello!!! ' + name);
+    const newStatus = "Completed"
+    this.setState({
+      status: newStatus
+    })
+  }
   render() {
     const {tasks} = this.state
 
@@ -116,13 +127,18 @@ class App extends Component {
         <td><input type="checkbox" className="form-check-input"
           onChange={() => this.handleTaskCompletion(task, i)}/> 
         </td>
-        <td> pending </td>
+        <td> {this.state.status} </td>
         <td> edit | <span onClick = {() => this.handleDelete(task, i) }>delete</span> </td>
       </tr>
   )
     return (
       <div className="row">
           <div className="col-sm"> 
+            <Name 
+              nameProps = "Abou"
+              sayHelloProps = {() => this.sayHello('abou')}
+              
+            />
             <h2> Task Manager </h2><br /><br />
             <input onChange = {(event) => this.handleNewTask(event)}
               onKeyDown={(event) => this.handleKeyDown(event)}
