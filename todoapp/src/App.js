@@ -63,9 +63,30 @@ class App extends Component {
     });
 
   }
+
+  handleToggleAll() {
+    //Set all to complete
+    const [...tasksCopy] = this.state.tasks
+    const allToggled = tasksCopy.every(task => task.completed)
+
+    const toggleAllTasks = tasksCopy.map(task => 
+      ({...task, completed: !allToggled})
+    )
+
+    console.log('All Toggled ? ' + allToggled)
+
+    this.setState({
+      tasks: toggleAllTasks
+    })
+
+    
+
+  }
   render() {
+    const {tasks} = this.state
 
     let num = 0;
+    const allToggled = tasks.every(task => task.completed)
 
     const listItems = this.state.tasks.map((task, i) => 
       <tr key={task.title.toString()}>
@@ -91,7 +112,8 @@ class App extends Component {
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Task</th>
-                  <th scope="col">Check Complete </th>
+                  <th scope="col"><input type="checkbox" className="form-check-input" 
+                    onChange={() => this.handleToggleAll()}/> Check Complete </th>
                   <th scope="col">Status</th>
                   <th scope="col">Admin</th>
                 </tr>
