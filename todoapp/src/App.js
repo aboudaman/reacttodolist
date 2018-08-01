@@ -16,9 +16,12 @@ class App extends Component {
   }
 
   handleTaskCompletion(task, i) {
-             //get copy of task object 
+    
+    //get copy of task object 
     const { completed } = task
-    const [...taskCopy] = this.state.tasks //Get copy of task array
+
+    //Get copy of task array
+    const [...taskCopy] = this.state.tasks 
     taskCopy[i] = {...task, completed: !completed}
 
     //Update the array
@@ -65,6 +68,7 @@ class App extends Component {
   }
 
   handleToggleAll() {
+
     //Set all to complete
     const [...tasksCopy] = this.state.tasks
     const allToggled = tasksCopy.every(task => task.completed)
@@ -73,14 +77,31 @@ class App extends Component {
       ({...task, completed: !allToggled})
     )
 
-    console.log('All Toggled ? ' + allToggled)
+    const checkBoxes = document.querySelectorAll('input[type="checkbox"]')
 
+    for (let i=0; i<checkBoxes.length; i++) {
+        if (!allToggled)
+          checkBoxes[i].checked = "checked"
+        else
+        checkBoxes[i].checked = ""
+
+    }
     this.setState({
       tasks: toggleAllTasks
     })
+  }
 
-    
+  handleDeleteAll() {
+    // const {tasks} = this.state
+    const [...tasksCopy] = this.state.tasks
 
+    const allDeletedTasks = tasksCopy.filter(task => !task.completed)
+
+    console.log('hi ', allDeletedTasks)
+
+    this.setState({
+      tasks: allDeletedTasks
+    })
   }
   render() {
     const {tasks} = this.state
@@ -92,7 +113,7 @@ class App extends Component {
       <tr key={task.title.toString()}>
         <td> {num++}</td>
         <td style={{color: task.completed? "green":""}}>  {task.title} </td>
-        <td><input type="checkbox" className="form-check-input" 
+        <td><input type="checkbox" className="form-check-input"
           onChange={() => this.handleTaskCompletion(task, i)}/> 
         </td>
         <td> pending </td>
@@ -106,7 +127,10 @@ class App extends Component {
             <input onChange = {(event) => this.handleNewTask(event)}
               onKeyDown={(event) => this.handleKeyDown(event)}
               value = {this.state.newItem}
-            /> <br /> <br />
+              style = {{marginRight: "20px"}}
+            />
+            <button type="button" className="btn btn-danger" onClick={() => this.handleDeleteAll()}>Delete ALL</button>
+            <br /> <br />
             <table className="table">
               <thead>
                 <tr>
