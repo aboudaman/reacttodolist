@@ -13,6 +13,10 @@ class App extends Component {
   }
 
   componentDidMount() {
+    this.getData()
+  }
+
+  getData() {
     fetch('http://localhost:4000/tasks')
     .then(data => data.json())
     .then(tasks => this.setState({tasks: tasks}))
@@ -49,14 +53,30 @@ class App extends Component {
       if (value.length === 0) {
         return
       } else {
-      //Add to the array
-      this.setState({
-        tasks: [...tasks, {title: value, completed: false}],
-        newItem: ''
-      })
-      }
 
+      //Add to the array
+      // this.setState({
+      //   tasks: [...tasks, {title: value, completed: false}],
+      //   newItem: ''
+      // })
+
+      // POST to the database
+        fetch('http://localhost:4000/tasks', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            title: value,
+            completed: false,
+          }),
+        })
+        .then(() => this.setState({newItem: ''}))
+        .catch(error => console.error({error}))
+        .then((() => this.getData()))
+      }
     }
+    
   }
 
   handleDelete(task, index) {
