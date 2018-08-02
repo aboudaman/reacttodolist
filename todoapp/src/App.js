@@ -6,15 +6,17 @@ import Name from './Name';
 class App extends Component {
 
   state = {
-    tasks: [
-      {title: 'Learn React', completed: false},
-      {title: 'Learn Redux', completed: false},
-      {title: 'Learn React Native', completed: false},
-      {title: 'Create a web application', completed: false}
-    ],
+    tasks: [],
     color: "",
     newItem: '',
     status: 'pending'
+  }
+
+  componentDidMount() {
+    fetch('http://localhost:4000/tasks')
+    .then(data => data.json())
+    .then(tasks => this.setState({tasks: tasks}))
+    .catch(error => console.error({error}))
   }
 
   handleTaskCompletion(task, i) {
@@ -115,13 +117,13 @@ class App extends Component {
     })
   }
   render() {
-    const {tasks} = this.state
+    // const {tasks} = this.state
 
     let num = 0;
-    const allToggled = tasks.every(task => task.completed)
+    // const allToggled = tasks.every(task => task.completed)
 
     const listItems = this.state.tasks.map((task, i) => 
-      <tr key={task.title.toString()}>
+      <tr key={i}>
         <td> {num++}</td>
         <td style={{color: task.completed? "green":""}}>  {task.title} </td>
         <td><input type="checkbox" className="form-check-input"
