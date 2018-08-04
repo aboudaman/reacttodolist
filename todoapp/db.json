@@ -1,14 +1,24 @@
 {
   "tasks": [
     {
-      "title": "adad",
-      "completed": false,
-      "id": 1
+      "title": "learn db integration",
+      "completed": true,
+      "id": 3
     },
     {
-      "title": "aada",
+      "title": "learn react",
+      "completed": true,
+      "id": 4
+    },
+    {
+      "title": "learn redux",
       "completed": false,
-      "id": 2
+      "id": 5
+    },
+    {
+      "title": "learn react native",
+      "completed": false,
+      "id": 6
     }
   ]
 }

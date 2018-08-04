@@ -23,18 +23,35 @@ class App extends Component {
     .catch(error => console.error({error}))
   }
 
-  handleTaskCompletion(task, i) {
+  // Update task in array
+  // handleTaskCompletion(task, i) {
     
-    //get copy of task object 
-    const { completed } = task
+  //   //get copy of task object 
+  //   const { completed } = task
 
-    //Get copy of task array
-    const [...taskCopy] = this.state.tasks 
-    taskCopy[i] = {...task, completed: !completed}
+  //   //Get copy of task array
+  //   const [...taskCopy] = this.state.tasks 
+  //   taskCopy[i] = {...task, completed: !completed}
 
-    //Update the array
-    this.setState({tasks: taskCopy})
+  //   //Update the array
+  //   this.setState({tasks: taskCopy})
+  // }
+
+  handleTaskCompletion(task) {
+    const {id, completed} = task;
+    fetch(`http://localhost:4000/tasks/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        completed: !completed
+      })
+    })
+    .then(() => this.getData())
+
   }
+
 
   handleNewTask(event) {
     const newTask = event.target.value;
