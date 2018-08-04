@@ -79,17 +79,32 @@ class App extends Component {
     
   }
 
-  handleDelete(task, index) {
-    const {tasks} = this.state
-    const excludeTask = tasks.filter((task, i) => {
-      return i !== index
-    }) 
+  // Filtering data through an array
+  // handleDelete(task, index) {
 
-    this.setState({
-      tasks: excludeTask
-    });
+  //   const {tasks} = this.state
+  //   const excludeTask = tasks.filter((task, i) => {
+  //     return i !== index
+  //   }) 
+  //   this.setState({
+  //     tasks: excludeTask
+  //   });
+
+  // }
+
+  // Handle delete from backend
+
+  handleDelete(id) {
+    fetch(`http://localhost:4000/tasks/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(() => this.getData())
 
   }
+
 
   handleToggleAll() {
 
@@ -115,17 +130,37 @@ class App extends Component {
     })
   }
 
+  // Filters all data from array
+  // handleDeleteAll() {
+  //   // const {tasks} = this.state
+  //   const [...tasksCopy] = this.state.tasks
+
+  //   const allDeletedTasks = tasksCopy.filter(task => !task.completed)
+
+  //   console.log('hi ', allDeletedTasks)
+
+  //   this.setState({
+  //     tasks: allDeletedTasks
+  //   })
+  // }
+
+  //DeleteAll
   handleDeleteAll() {
-    // const {tasks} = this.state
-    const [...tasksCopy] = this.state.tasks
 
-    const allDeletedTasks = tasksCopy.filter(task => !task.completed)
+    const {tasks} = this.state
 
-    console.log('hi ', allDeletedTasks)
+    const completedTasks = tasks.filter(task => task.completed)
 
-    this.setState({
-      tasks: allDeletedTasks
-    })
+    Promise.all(completedTasks.map(task =>     
+      fetch(`http://localhost:4000/tasks/${task.id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+        }
+      })  
+      )
+    )
+    .then(() => this.getData())
   }
 
 
@@ -150,7 +185,7 @@ class App extends Component {
           onChange={() => this.handleTaskCompletion(task, i)}/> 
         </td>
         <td> {this.state.status} </td>
-        <td> edit | <span onClick = {() => this.handleDelete(task, i) }>delete</span> </td>
+        <td> edit | <span onClick = {() => this.handleDelete(task.id) }>delete</span> </td>
       </tr>
   )
     return (
