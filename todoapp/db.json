@@ -2,23 +2,28 @@
   "tasks": [
     {
       "title": "learn db integration",
-      "completed": false,
+      "completed": true,
       "id": 3
     },
     {
       "title": "learn react",
-      "completed": false,
+      "completed": true,
       "id": 4
     },
     {
       "title": "learn redux",
-      "completed": false,
+      "completed": true,
       "id": 5
     },
     {
       "title": "learn react native",
-      "completed": false,
+      "completed": true,
       "id": 6
+    },
+    {
+      "title": "learn orange",
+      "completed": true,
+      "id": 7
     }
   ]
 }

@@ -39,6 +39,7 @@ class App extends Component {
 
   handleTaskCompletion(task) {
     const {id, completed} = task;
+
     fetch(`http://localhost:4000/tasks/${id}`, {
       method: 'PATCH',
       headers: {
@@ -63,7 +64,7 @@ class App extends Component {
 
     // Get existing copy of tasks and newItem
 
-    const {tasks, newItem} = this.state
+    const {newItem} = this.state
     const value =  newItem.trim()
 
     if (keyPressed === 13) {
@@ -150,36 +151,22 @@ class App extends Component {
 
 handleEditAll() {
   const {tasks} = this.state
- 
-  const taskStatus = tasks.map(task => {
-    // console.log(task.id, task.completed)
-    return task.completed
 
-  })
-
-  console.log(`task status Beffore ${taskStatus}`)
-
-  Promise.all(tasks.map(task => {
-    fetch(`http://localhost:4000/tasks/${task.id}`), {
+  Promise.all(
+    tasks.map(task => fetch(`http://localhost:4000/tasks/${task.id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        completed: true
+        completed: !task.completed
       })
-      
-
-    }
-
-    console.log(`hello ${!taskStatus}`)
-  } 
-
-  )
+    })
   
+  ) //close map
 
-  )
-
+  )//end promise
+  .then(() => this.getData())
 }
 
 
@@ -229,7 +216,7 @@ handleEditAll() {
   render() {
     // const {tasks} = this.state
 
-    let num = 0;
+    let num = 0
     // const allToggled = tasks.every(task => task.completed)
 
     const listItems = this.state.tasks.map((task, i) => 
@@ -237,7 +224,7 @@ handleEditAll() {
         <td> {num++}</td>
         <td style={{color: task.completed? "green":""}}>  {task.title} </td>
         <td><input type="checkbox" className="form-check-input"
-          onChange={() => this.handleTaskCompletion(task, i)}/> 
+          onChange={() => this.handleTaskCompletion(task)}/> 
         </td>
         <td> {this.state.status} </td>
         <td> edit | <span onClick = {() => this.handleDelete(task.id) }>delete</span> </td>
