@@ -122,30 +122,68 @@ class App extends Component {
 
   }
 
+//on local array leveEdit() {
 
-  handleToggleAll() {
+  //   //Set all to complete
+  //   const [...tasksCopy] = this.state.tasks
+  //   const allToggled = tasksCopy.every(task => task.completed)
 
-    //Set all to complete
-    const [...tasksCopy] = this.state.tasks
-    const allToggled = tasksCopy.every(task => task.completed)
+  //   const toggleAllTasks = tasksCopy.map(task => 
+  //     ({...task, completed: !allToggled})
+  //   )
 
-    const toggleAllTasks = tasksCopy.map(task => 
-      ({...task, completed: !allToggled})
-    )
+  //   const checkBoxes = document.querySelectorAll('input[type="checkbox"]')
 
-    const checkBoxes = document.querySelectorAll('input[type="checkbox"]')
+  //   for (let i=0; i<checkBoxes.length; i++) {
+  //       if (!allToggled)
+  //         checkBoxes[i].checked = "checked"
+  //       else
+  //       checkBoxes[i].checked = ""
 
-    for (let i=0; i<checkBoxes.length; i++) {
-        if (!allToggled)
-          checkBoxes[i].checked = "checked"
-        else
-        checkBoxes[i].checked = ""
+  //   }
+  //   this.setState({
+  //     tasks: toggleAllTasks
+  //   })
+  // }
+
+  // Handle Toggle All on backend
+
+handleEditAll() {
+  const {tasks} = this.state
+ 
+  const taskStatus = tasks.map(task => {
+    // console.log(task.id, task.completed)
+    return task.completed
+
+  })
+
+  console.log(`task status Beffore ${taskStatus}`)
+
+  Promise.all(tasks.map(task => {
+    fetch(`http://localhost:4000/tasks/${task.id}`), {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        completed: true
+      })
+      
 
     }
-    this.setState({
-      tasks: toggleAllTasks
-    })
-  }
+
+    console.log(`hello ${!taskStatus}`)
+  } 
+
+  )
+  
+
+  )
+
+}
+
+
+
 
   // Filters all data from array
   // handleDeleteAll() {
@@ -227,7 +265,7 @@ class App extends Component {
                   <th scope="col">#</th>
                   <th scope="col">Task</th>
                   <th scope="col"><input type="checkbox" className="form-check-input" 
-                    onChange={() => this.handleToggleAll()}/> Check Complete </th>
+                    onChange={() => this.handleEditAll()}/> Check Complete </th>
                   <th scope="col">Status</th>
                   <th scope="col">Admin</th>
                 </tr>
